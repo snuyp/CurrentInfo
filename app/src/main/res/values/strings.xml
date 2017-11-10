@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">CurrentInfo</string>
+    <string name="info_title_hint">Enter a title for the information.</string>
+    <string name="info_title_label">Title</string>
+    <string name="info_details_label">Details</string>
+    <string name="info_sent_label">Sent?</string>
 </resources>

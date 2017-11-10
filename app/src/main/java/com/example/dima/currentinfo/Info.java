@@ -1,5 +1,6 @@
 package com.example.dima.currentinfo;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -9,10 +10,29 @@ import java.util.UUID;
 public class Info {
     private UUID mId;
     private String mTitle;
+    private Date mDate;
+    private boolean mSent;
 
     public Info()
     {
         mId = UUID.randomUUID();
+        mDate = new Date();
+    }
+
+    public Date getDate() {
+        return mDate;
+    }
+
+    public void setDate(Date date) {
+        mDate = date;
+    }
+
+    public boolean isSent() {
+        return mSent;
+    }
+
+    public void setSent(boolean sent) {
+        mSent = sent;
     }
 
     public UUID getId() {
