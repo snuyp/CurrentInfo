@@ -53,7 +53,7 @@ public class InfoFragment extends Fragment {
         });
 
         mDateButton = (Button) v.findViewById(R.id.info_date);
-        mDateButton.setText(mInfo.getDate().toString());
+        mDateButton.setText(mInfo.getDate());
         mDateButton.setEnabled(false);
 
         mSentCheckBox = (CheckBox) v.findViewById(R.id.info_sent);

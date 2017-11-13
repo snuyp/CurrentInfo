@@ -1,5 +1,6 @@
 package com.example.dima.currentinfo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -12,15 +13,18 @@ public class Info {
     private String mTitle;
     private Date mDate;
     private boolean mSent;
+    private SimpleDateFormat mFormatForDateNow;
 
     public Info()
     {
         mId = UUID.randomUUID();
         mDate = new Date();
+        mFormatForDateNow = new SimpleDateFormat("E dd.MM.yyyy '[' hh:mm:ss ']'" );
     }
 
-    public Date getDate() {
-        return mDate;
+    public String getDate() {
+
+        return mFormatForDateNow.format(mDate);
     }
 
     public void setDate(Date date) {
