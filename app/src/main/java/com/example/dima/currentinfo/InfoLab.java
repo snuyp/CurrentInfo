@@ -26,7 +26,7 @@ public class InfoLab {
         mInfoList = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             Info info = new Info();
-            info.setTitle("Info" + i);
+            info.setTitle("Info " + i);
             info.setSent(i % 2 == 0);
             mInfoList.add(info);
         }

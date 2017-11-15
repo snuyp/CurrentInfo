@@ -16,30 +16,40 @@ import java.util.List;
  */
 public class InfoListFragment extends Fragment {
     private RecyclerView mInfoRecyclerView;
+    private InfoAdapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_info_list,container,false);
+        View v = inflater.inflate(R.layout.fragment_info_list, container, false);
         mInfoRecyclerView = (RecyclerView) v.findViewById(R.id.info_recycler_view);
         mInfoRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
+        updateUI();
         return v;
     }
+
+    private void updateUI() {
+        InfoLab infoLab = InfoLab.get(getActivity());
+        List<Info> infoList = infoLab.getInfoList();
+        mAdapter = new InfoAdapter(infoList);
+        mInfoRecyclerView.setAdapter(mAdapter);
+    }
+
     private class InfoHolder extends RecyclerView.ViewHolder {
         public TextView mTitleTextView;
+
         public InfoHolder(View itemView) {
             super(itemView);
             mTitleTextView = (TextView) itemView;
         }
     }
-    private class InfoAdapter extends RecyclerView.Adapter<InfoHolder>
-    {
+
+    private class InfoAdapter extends RecyclerView.Adapter<InfoHolder> {
         private List<Info> mInfoList;
 
-        public InfoAdapter(List<Info> infoList)
-        {
+        public InfoAdapter(List<Info> infoList) {
             mInfoList = infoList;
         }
+
         @Override
         public InfoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
