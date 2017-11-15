@@ -7,7 +7,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -34,12 +36,30 @@ public class InfoListFragment extends Fragment {
         mInfoRecyclerView.setAdapter(mAdapter);
     }
 
-    private class InfoHolder extends RecyclerView.ViewHolder {
-        public TextView mTitleTextView;
-
+    private class InfoHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView mTitleTextView;
+        private TextView mDateTextView;
+        private CheckBox mSentCheckBox;
+        private Info mInfo;
         public InfoHolder(View itemView) {
             super(itemView);
-            mTitleTextView = (TextView) itemView;
+            itemView.setOnClickListener(this);
+            mTitleTextView = (TextView) itemView.findViewById(R.id.card_list_item_info_title_text_view);
+            mDateTextView = (TextView) itemView.findViewById(R.id.card_list_item_info_date_text_view);
+            mSentCheckBox = (CheckBox) itemView.findViewById(R.id.card_list_item_info_sent_check_box);
+
+        }
+        public void bindInfo(Info info)
+        {
+            mInfo = info;
+            mTitleTextView.setText(mInfo.getTitle());
+            mDateTextView.setText(mInfo.getDate());
+            mSentCheckBox.setChecked(mInfo.isSent());
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getActivity(),mInfo.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -53,19 +73,21 @@ public class InfoListFragment extends Fragment {
         @Override
         public InfoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View view = layoutInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            View view = layoutInflater.inflate(R.layout.card_list_item_info, parent, false);
             return new InfoHolder(view);
         }
 
         @Override
         public void onBindViewHolder(InfoHolder holder, int position) {
             Info info = mInfoList.get(position);
-            holder.mTitleTextView.setText(info.getTitle());
+            holder.bindInfo(info);
         }
 
         @Override
         public int getItemCount() {
             return mInfoList.size();
         }
+
+
     }
 }
