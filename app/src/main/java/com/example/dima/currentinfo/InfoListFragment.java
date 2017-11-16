@@ -1,5 +1,6 @@
 package com.example.dima.currentinfo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +20,7 @@ import java.util.List;
 public class InfoListFragment extends Fragment {
     private RecyclerView mInfoRecyclerView;
     private InfoAdapter mAdapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class InfoListFragment extends Fragment {
         private TextView mDateTextView;
         private CheckBox mSentCheckBox;
         private Info mInfo;
+
         public InfoHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
@@ -49,8 +52,8 @@ public class InfoListFragment extends Fragment {
             mSentCheckBox = (CheckBox) itemView.findViewById(R.id.card_list_item_info_sent_check_box);
 
         }
-        public void bindInfo(Info info)
-        {
+
+        public void bindInfo(Info info) {
             mInfo = info;
             mTitleTextView.setText(mInfo.getTitle());
             mDateTextView.setText(mInfo.getDate());
@@ -59,7 +62,9 @@ public class InfoListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(getActivity(),mInfo.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
+            Intent intent = InfoActivity.newIntent(getActivity(),mInfo.getId());
+            startActivity(intent);
+//            Toast.makeText(getActivity(),mInfo.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -13,11 +13,14 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import java.util.UUID;
+
 /**
  * Created by Dima on 10.11.2017.
  */
 
 public class InfoFragment extends Fragment {
+    private static final String ARG_INFO_ID = "info_id";
     private Info mInfo;
     private EditText mTitleField;
     private Button mDateButton;
@@ -26,7 +29,9 @@ public class InfoFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mInfo = new Info();
+        UUID uuid = (UUID) getActivity().getIntent().getSerializableExtra(InfoActivity.EXTRA_INFO_ID);
+
+        mInfo = InfoLab.get(getActivity()).getInfo(uuid);
     }
 
     @Nullable
@@ -35,6 +40,7 @@ public class InfoFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_info,container,false);
 
         mTitleField = (EditText) v.findViewById(R.id.info_title);
+        mTitleField.setText(mInfo.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -57,6 +63,7 @@ public class InfoFragment extends Fragment {
         mDateButton.setEnabled(false);
 
         mSentCheckBox = (CheckBox) v.findViewById(R.id.info_sent);
+        mSentCheckBox.setChecked(mInfo.isSent());
         mSentCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
