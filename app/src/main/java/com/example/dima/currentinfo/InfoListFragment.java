@@ -20,7 +20,7 @@ import java.util.List;
 public class InfoListFragment extends Fragment {
     private RecyclerView mInfoRecyclerView;
     private InfoAdapter mAdapter;
-
+    private int mCurrentPosition;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,8 +34,23 @@ public class InfoListFragment extends Fragment {
     private void updateUI() {
         InfoLab infoLab = InfoLab.get(getActivity());
         List<Info> infoList = infoLab.getInfoList();
-        mAdapter = new InfoAdapter(infoList);
-        mInfoRecyclerView.setAdapter(mAdapter);
+
+        if(mAdapter == null) {
+            mAdapter = new InfoAdapter(infoList);
+            mInfoRecyclerView.setAdapter(mAdapter);
+        }
+        else
+        {
+//          mAdapter.notifyDataSetChanged(); // update all position
+            mAdapter.notifyItemChanged(mCurrentPosition); // update current position
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        updateUI();
     }
 
     private class InfoHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -43,6 +58,7 @@ public class InfoListFragment extends Fragment {
         private TextView mDateTextView;
         private CheckBox mSentCheckBox;
         private Info mInfo;
+
 
         public InfoHolder(View itemView) {
             super(itemView);
@@ -58,12 +74,14 @@ public class InfoListFragment extends Fragment {
             mTitleTextView.setText(mInfo.getTitle());
             mDateTextView.setText(mInfo.getDate());
             mSentCheckBox.setChecked(mInfo.isSent());
+
         }
 
         @Override
         public void onClick(View v) {
             Intent intent = InfoActivity.newIntent(getActivity(),mInfo.getId());
             startActivity(intent);
+            mCurrentPosition = getAdapterPosition();
 //            Toast.makeText(getActivity(),mInfo.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
         }
     }

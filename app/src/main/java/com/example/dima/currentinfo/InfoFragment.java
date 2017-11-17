@@ -26,10 +26,20 @@ public class InfoFragment extends Fragment {
     private Button mDateButton;
     private CheckBox mSentCheckBox;
 
+
+    public static InfoFragment newInstance (UUID infoId)
+    {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_INFO_ID, infoId);
+
+        InfoFragment infoFragment = new InfoFragment();
+        infoFragment.setArguments(args);
+        return infoFragment;
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UUID uuid = (UUID) getActivity().getIntent().getSerializableExtra(InfoActivity.EXTRA_INFO_ID);
+        UUID uuid = (UUID) getActivity().getIntent().getSerializableExtra(ARG_INFO_ID);
 
         mInfo = InfoLab.get(getActivity()).getInfo(uuid);
     }

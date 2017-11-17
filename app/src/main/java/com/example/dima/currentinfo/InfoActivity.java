@@ -10,7 +10,7 @@ import android.os.Bundle;
 import java.util.UUID;
 
 public class InfoActivity extends SingleFragmentActivity{
-    public static final String EXTRA_INFO_ID = "com.example.dima.currentinfo.info_id";
+    private static final String EXTRA_INFO_ID = "info_id";
 
     public static Intent newIntent(Context packageContext, UUID infoId)
     {
@@ -20,6 +20,7 @@ public class InfoActivity extends SingleFragmentActivity{
     }
     @Override
     protected Fragment createFragment() {
-        return new InfoFragment();
+        UUID uuid = (UUID) getIntent().getSerializableExtra(EXTRA_INFO_ID);
+        return InfoFragment.newInstance(uuid);
     }
 }
