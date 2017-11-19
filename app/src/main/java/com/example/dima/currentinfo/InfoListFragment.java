@@ -43,6 +43,7 @@ public class InfoListFragment extends Fragment {
         {
 //          mAdapter.notifyDataSetChanged(); // update all position
             mAdapter.notifyItemChanged(mCurrentPosition); // update current position
+
         }
     }
 
@@ -79,7 +80,7 @@ public class InfoListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Intent intent = InfoActivity.newIntent(getActivity(),mInfo.getId());
+            Intent intent = InfoPagerActivity.newIntent(getActivity(), mInfo.getId());
             startActivity(intent);
             mCurrentPosition = getAdapterPosition();
 //            Toast.makeText(getActivity(),mInfo.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();

@@ -39,14 +39,13 @@ public class InfoFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UUID uuid = (UUID) getActivity().getIntent().getSerializableExtra(ARG_INFO_ID);
+        UUID uuid = (UUID) getArguments().getSerializable(ARG_INFO_ID);
 
         mInfo = InfoLab.get(getActivity()).getInfo(uuid);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_info,container,false);
 
         mTitleField = (EditText) v.findViewById(R.id.info_title);

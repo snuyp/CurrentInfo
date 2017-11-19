@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/info_title_label"
+        android:layout_marginLeft="8dp"
         />
 
     <EditText
@@ -16,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/info_title_hint"
+        android:layout_marginLeft="8dp"
         />
 
     <TextView
@@ -23,6 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/info_details_label"
+        android:layout_marginLeft="8dp"
         />
 
     <Button
@@ -31,6 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+
         />
 
     <CheckBox

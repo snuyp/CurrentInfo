@@ -16,6 +16,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:orientation="vertical">
 
         <CheckBox
@@ -32,6 +33,7 @@
             android:layout_toLeftOf="@id/card_list_item_info_sent_check_box"
             android:textStyle="bold"
             android:padding="4dp"
+            android:layout_marginLeft="8dp"
             tools:text="Info Title"
             />
         <TextView
@@ -41,6 +43,7 @@
             android:layout_toLeftOf="@id/card_list_item_info_sent_check_box"
             android:layout_below="@id/card_list_item_info_title_text_view"
             android:padding="4dp"
+            android:layout_marginLeft="8dp"
             tools:text="Info Date"
             />
     </RelativeLayout>
