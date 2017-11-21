@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
 import java.util.List;
 import java.util.UUID;
@@ -60,6 +61,7 @@ public class InfoPagerActivity extends FragmentActivity {
             }
 
         });
+
         for (int i = 0; i < mInfoList.size(); i++) {
             if (mInfoList.get(i).getId().equals(infoId)) {
                 mViewPager.setCurrentItem(i);

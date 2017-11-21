@@ -3,6 +3,7 @@ package com.example.dima.currentinfo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -27,7 +28,9 @@ public class InfoListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_info_list, container, false);
         mInfoRecyclerView = (RecyclerView) v.findViewById(R.id.info_recycler_view);
         mInfoRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         updateUI();
+
         return v;
     }
 
@@ -35,17 +38,18 @@ public class InfoListFragment extends Fragment {
         InfoLab infoLab = InfoLab.get(getActivity());
         List<Info> infoList = infoLab.getInfoList();
 
-        if(mAdapter == null) {
+        if (mAdapter == null) {
             mAdapter = new InfoAdapter(infoList);
             mInfoRecyclerView.setAdapter(mAdapter);
-        }
-        else
-        {
-//          mAdapter.notifyDataSetChanged(); // update all position
-            mAdapter.notifyItemChanged(mCurrentPosition); // update current position
+        } else {
+//          TODO: Change this for optimize
+            mAdapter.notifyDataSetChanged(); // update all position
+
+//          mAdapter.notifyItemChanged(mCurrentPosition); // update current position (is bug)
 
         }
     }
+
 
     @Override
     public void onResume() {
@@ -73,9 +77,10 @@ public class InfoListFragment extends Fragment {
         public void bindInfo(Info info) {
             mInfo = info;
             mTitleTextView.setText(mInfo.getTitle());
-            mDateTextView.setText(mInfo.getDate());
+            mDateTextView.setText(mInfo.getSimpleDate());
             mSentCheckBox.setChecked(mInfo.isSent());
-
+            mSentCheckBox.setText(R.string.was_sent);
+            mSentCheckBox.setEnabled(false);
         }
 
         @Override

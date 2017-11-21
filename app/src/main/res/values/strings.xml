@@ -4,4 +4,6 @@
     <string name="info_title_label">Title</string>
     <string name="info_details_label">Details</string>
     <string name="info_sent_label">Sent?</string>
+    <string name="was_sent">Was sent.</string>
+    <string name="date_picker_title">Date:</string>
 </resources>
