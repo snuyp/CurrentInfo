@@ -6,4 +6,9 @@
     <string name="info_sent_label">Sent?</string>
     <string name="was_sent">Was sent.</string>
     <string name="date_picker_title">Date:</string>
+
+    <string name="new_info">New Data</string>
+    <string name="show_subtitle">Show Subtitle</string>
+    <string name="hide_subtitle">Hide Subtitle</string>
+    <string name="subtitle_format">%1$s [data points]</string>
 </resources>

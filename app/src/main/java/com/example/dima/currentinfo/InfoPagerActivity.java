@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.UUID;
  * Created by Dima on 19.11.2017.
  */
 
-public class InfoPagerActivity extends FragmentActivity {
+public class InfoPagerActivity extends AppCompatActivity {
     private static final String EXTRA_INFO_ID = "info_id";
 
     private ViewPager mViewPager;

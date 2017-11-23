@@ -2,11 +2,16 @@ package com.example.dima.currentinfo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -22,6 +27,12 @@ public class InfoListFragment extends Fragment {
     private RecyclerView mInfoRecyclerView;
     private InfoAdapter mAdapter;
     private int mCurrentPosition;
+    private boolean mSubtitleVisible;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,6 +45,33 @@ public class InfoListFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId())
+        {
+            case R.id.menu_item_new_info:
+                Info info = new Info();
+                InfoLab.get(getActivity()).addInfo(info);
+                Intent intent = InfoPagerActivity.newIntent(getActivity(), info.getId());
+                startActivity(intent);
+                return true;
+//            case R.id.menu_item_show_subtitle:
+//                updateSubtitle();
+//                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    private void updateSubtitle()
+    {
+        InfoLab infoLab = InfoLab.get(getActivity());
+        int infoCount  = infoLab.getInfoList().size();
+        String subtitle = getString(R.string.subtitle_format, infoCount);
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().setSubtitle(subtitle);
+    }
     private void updateUI() {
         InfoLab infoLab = InfoLab.get(getActivity());
         List<Info> infoList = infoLab.getInfoList();
@@ -44,12 +82,23 @@ public class InfoListFragment extends Fragment {
         } else {
 //          TODO: Change this for optimize
             mAdapter.notifyDataSetChanged(); // update all position
-
 //          mAdapter.notifyItemChanged(mCurrentPosition); // update current position (is bug)
-
         }
+        updateSubtitle();
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_info_list, menu);
+//        MenuItem subtitleItem = menu.findItem(R.id.menu_item_show_subtitle);
+//        if(mSubtitleVisible)
+//        {
+//            subtitleItem.setTitle(R.string.hide_subtitle);
+//        }else{
+//            subtitleItem.setTitle(R.string.show_subtitle);
+//        }
+    }
 
     @Override
     public void onResume() {

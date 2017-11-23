@@ -22,15 +22,7 @@ public class InfoLab {
     }
 
     private InfoLab(Context context) {
-
         mInfoList = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            Info info = new Info();
-            info.setTitle("Info " + i);
-            info.setSent(i % 2 == 0);
-            mInfoList.add(info);
-        }
-
     }
 
     public List<Info> getInfoList() {
@@ -44,5 +36,9 @@ public class InfoLab {
             }
         }
         return null;
+    }
+    public void addInfo(Info info)
+    {
+        mInfoList.add(info);
     }
 }
