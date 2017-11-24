@@ -103,7 +103,6 @@ public class InfoListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         updateUI();
     }
 
