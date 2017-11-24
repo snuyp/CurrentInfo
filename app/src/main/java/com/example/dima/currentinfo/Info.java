@@ -13,21 +13,20 @@ public class Info {
     private String mTitle;
     private Date mDate;
     private boolean mSent;
-    private SimpleDateFormat mFormatForDate;
+    private SimpleDateFormat mSimpleDate;
 
     public Info()
     {
         mId = UUID.randomUUID();
         mDate = new Date();
-        mFormatForDate = new SimpleDateFormat("E dd.MM.yyyy '[' hh:mm:ss ']'" );
+        mSimpleDate = new SimpleDateFormat("E dd.MM.yyyy '[' hh:mm:ss ']'" );
     }
 
     public String getSimpleDate() {
 
-        return mFormatForDate.format(mDate);
+        return mSimpleDate.format(mDate);
     }
     public Date getDate() {
-
         return mDate;
     }
 

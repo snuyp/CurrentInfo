@@ -126,9 +126,20 @@ public class InfoListFragment extends Fragment {
             mInfo = info;
             mTitleTextView.setText(mInfo.getTitle());
             mDateTextView.setText(mInfo.getSimpleDate());
-            mSentCheckBox.setChecked(mInfo.isSent());
-            mSentCheckBox.setText(R.string.was_sent);
+            updateSentCheckBox();
+        }
+        private void updateSentCheckBox()
+        {
             mSentCheckBox.setEnabled(false);
+            mSentCheckBox.setChecked(mInfo.isSent());
+            if(mInfo.isSent())
+            {
+                mSentCheckBox.setText(R.string.was_sent);
+            }
+            else
+            {
+                mSentCheckBox.setText(R.string.not_sent);
+            }
         }
 
         @Override
