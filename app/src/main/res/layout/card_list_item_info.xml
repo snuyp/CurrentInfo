@@ -56,4 +56,3 @@
             tools:text="Info Date"/>
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>
-

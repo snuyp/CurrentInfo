@@ -1,10 +1,13 @@
 package com.example.dima.currentinfo;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,7 +31,8 @@ public class InfoListFragment extends Fragment {
     private RecyclerView mInfoRecyclerView;
     private InfoAdapter mAdapter;
     private int mCurrentPosition;
-    private boolean mSubtitleVisible;
+
+    //    private boolean mSubtitleVisible;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,8 +53,7 @@ public class InfoListFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case R.id.menu_item_new_info:
                 Info info = new Info();
                 InfoLab.get(getActivity()).addInfo(info);
@@ -63,15 +67,16 @@ public class InfoListFragment extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
-    private void updateSubtitle()
-    {
+
+    private void updateSubtitle() {
         InfoLab infoLab = InfoLab.get(getActivity());
-        int infoCount  = infoLab.getInfoList().size();
+        int infoCount = infoLab.getInfoList().size();
         String subtitle = getString(R.string.subtitle_format, infoCount);
 
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.getSupportActionBar().setSubtitle(subtitle);
     }
+
     private void updateUI() {
         InfoLab infoLab = InfoLab.get(getActivity());
         List<Info> infoList = infoLab.getInfoList();
@@ -106,7 +111,7 @@ public class InfoListFragment extends Fragment {
         updateUI();
     }
 
-    private class InfoHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class InfoHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private TextView mTitleTextView;
         private TextView mDateTextView;
         private CheckBox mSentCheckBox;
@@ -116,6 +121,7 @@ public class InfoListFragment extends Fragment {
         public InfoHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
             mTitleTextView = (TextView) itemView.findViewById(R.id.card_list_item_info_title_text_view);
             mDateTextView = (TextView) itemView.findViewById(R.id.card_list_item_info_date_text_view);
             mSentCheckBox = (CheckBox) itemView.findViewById(R.id.card_list_item_info_sent_check_box);
@@ -128,16 +134,13 @@ public class InfoListFragment extends Fragment {
             mDateTextView.setText(mInfo.getSimpleDate());
             updateSentCheckBox();
         }
-        private void updateSentCheckBox()
-        {
+
+        private void updateSentCheckBox() {
             mSentCheckBox.setEnabled(false);
             mSentCheckBox.setChecked(mInfo.isSent());
-            if(mInfo.isSent())
-            {
+            if (mInfo.isSent()) {
                 mSentCheckBox.setText(R.string.was_sent);
-            }
-            else
-            {
+            } else {
                 mSentCheckBox.setText(R.string.not_sent);
             }
         }
@@ -148,6 +151,32 @@ public class InfoListFragment extends Fragment {
             startActivity(intent);
             mCurrentPosition = getAdapterPosition();
 //            Toast.makeText(getActivity(),mInfo.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.sure_delete)
+                    .setCancelable(true)
+                    .setNegativeButton(R.string.info_delete,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    InfoLab.get(getActivity()).deleteInfo(mInfo);
+                                    updateUI();
+                                    dialog.cancel();
+                                    Toast.makeText(getActivity(),R.string.info_delete, Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                    .setPositiveButton(R.string.return_dialog,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+            return true;
         }
     }
 

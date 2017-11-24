@@ -41,4 +41,8 @@ public class InfoLab {
     {
         mInfoList.add(info);
     }
+    public void deleteInfo(Info info)
+    {
+        mInfoList.remove(info);
+    }
 }
