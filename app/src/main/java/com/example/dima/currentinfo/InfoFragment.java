@@ -32,7 +32,7 @@ public class InfoFragment extends Fragment {
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mSentCheckBox;
-
+    private Button mDeleteButton;
 
     public static InfoFragment newInstance (UUID infoId)
     {
@@ -92,6 +92,14 @@ public class InfoFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 mInfo.setSent(b);
+            }
+        });
+        mDeleteButton = (Button) v.findViewById(R.id.info_delete);
+        mDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InfoLab.get(getActivity()).deleteInfo(mInfo);
+                getActivity().finish();
             }
         });
 
