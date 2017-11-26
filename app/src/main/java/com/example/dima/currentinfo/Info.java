@@ -11,14 +11,17 @@ import java.util.UUID;
 public class Info {
     private UUID mId;
     private String mTitle;
-    private Date mDate;
+    private Date mDate = new Date();
     private boolean mSent;
     private SimpleDateFormat mSimpleDate;
 
     public Info()
     {
-        mId = UUID.randomUUID();
-        mDate = new Date();
+        this(UUID.randomUUID());
+    }
+
+    public Info(UUID id) {
+        mId = id;
         mSimpleDate = new SimpleDateFormat("E dd.MM.yyyy '[' hh:mm:ss ']'" );
     }
 
@@ -32,6 +35,7 @@ public class Info {
 
     public void setDate(Date date) {
         mDate = date;
+        mSimpleDate.format(date);
     }
 
     public boolean isSent() {

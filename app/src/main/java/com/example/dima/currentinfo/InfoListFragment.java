@@ -1,5 +1,6 @@
 package com.example.dima.currentinfo;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -71,7 +72,7 @@ public class InfoListFragment extends Fragment {
     private void updateSubtitle() {
         InfoLab infoLab = InfoLab.get(getActivity());
         int infoCount = infoLab.getInfoList().size();
-        String subtitle = getString(R.string.subtitle_format, infoCount);
+        @SuppressLint("StringFormatMatches") String subtitle = getString(R.string.subtitle_format, infoCount);
 
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.getSupportActionBar().setSubtitle(subtitle);
@@ -86,6 +87,7 @@ public class InfoListFragment extends Fragment {
             mInfoRecyclerView.setAdapter(mAdapter);
         } else {
 //          TODO: Change this for optimize
+            mAdapter.setInfoList(infoList);
             mAdapter.notifyDataSetChanged(); // update all position
 //          mAdapter.notifyItemChanged(mCurrentPosition); // update current position (is bug)
         }
@@ -116,6 +118,7 @@ public class InfoListFragment extends Fragment {
         private TextView mDateTextView;
         private CheckBox mSentCheckBox;
         private Info mInfo;
+
 
 
         public InfoHolder(View itemView) {
@@ -158,16 +161,16 @@ public class InfoListFragment extends Fragment {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.sure_delete)
                     .setCancelable(true)
-                    .setNegativeButton(R.string.info_delete,
+                    .setPositiveButton(R.string.info_delete,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    InfoLab.get(getActivity()).deleteInfo(mInfo);
+                                    InfoLab.get(getActivity()).deleteInfo(mInfo.getId());
                                     updateUI();
                                     dialog.cancel();
                                     Toast.makeText(getActivity(),R.string.info_delete, Toast.LENGTH_SHORT).show();
                                 }
                             })
-                    .setPositiveButton(R.string.return_dialog,
+                    .setNegativeButton(R.string.return_dialog,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();
@@ -182,6 +185,10 @@ public class InfoListFragment extends Fragment {
 
     private class InfoAdapter extends RecyclerView.Adapter<InfoHolder> {
         private List<Info> mInfoList;
+
+        public void setInfoList(List<Info> infoList) {
+            mInfoList = infoList;
+        }
 
         public InfoAdapter(List<Info> infoList) {
             mInfoList = infoList;

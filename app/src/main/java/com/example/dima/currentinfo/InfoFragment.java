@@ -98,7 +98,7 @@ public class InfoFragment extends Fragment {
         mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                InfoLab.get(getActivity()).deleteInfo(mInfo);
+                InfoLab.get(getActivity()).deleteInfo(mInfo.getId());
                 getActivity().finish();
             }
         });
@@ -118,5 +118,12 @@ public class InfoFragment extends Fragment {
             mInfo.setDate(date);
             mDateButton.setText(mInfo.getSimpleDate());
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        InfoLab.get(getActivity()).updateInfo(mInfo);
     }
 }
