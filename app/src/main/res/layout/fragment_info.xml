@@ -52,6 +52,14 @@
         android:textStyle="italic"
         />
     <Button
+        android:id="@+id/info_report"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/info_report_text"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        />
+    <Button
         android:id="@+id/info_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,6 +68,6 @@
         android:text="@string/info_delete"
         android:textStyle="italic"
         android:gravity="center"
-
         />
+
 </LinearLayout>

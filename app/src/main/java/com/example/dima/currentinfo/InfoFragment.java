@@ -33,7 +33,7 @@ public class InfoFragment extends Fragment {
     private Button mDateButton;
     private CheckBox mSentCheckBox;
     private Button mDeleteButton;
-
+    private Button mReportButton;
     public static InfoFragment newInstance (UUID infoId)
     {
         Bundle args = new Bundle();
@@ -102,8 +102,24 @@ public class InfoFragment extends Fragment {
                 getActivity().finish();
             }
         });
+        mReportButton = (Button) v.findViewById(R.id.info_report);
+        mReportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.putExtra(Intent.EXTRA_TEXT, getDataReport());
+                startActivity(i);
+            }
+        });
 
         return v;
+    }
+
+    private String getDataReport() {
+//        TODO
+        String report = mInfo.getTitle()+" " + mInfo.getSimpleDate();
+        return report;
     }
 
     @Override

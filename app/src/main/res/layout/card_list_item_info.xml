@@ -25,7 +25,7 @@
             android:layout_marginTop="8dp"
             card_view:layout_constraintRight_toRightOf="parent"
             card_view:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="wrap_content"/>
+            android:layout_marginEnd="4dp"/>
 
         <TextView
             android:id="@+id/card_list_item_info_title_text_view"
@@ -41,7 +41,9 @@
             card_view:layout_constraintLeft_toLeftOf="parent"
             card_view:layout_constraintRight_toLeftOf="@+id/card_list_item_info_sent_check_box"
             card_view:layout_constraintTop_toTopOf="parent"
-            tools:text="Info Title"/>
+            tools:text="Info Title"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"/>
 
         <TextView
             android:id="@+id/card_list_item_info_date_text_view"
@@ -53,6 +55,7 @@
             android:textStyle="italic"
             card_view:layout_constraintLeft_toLeftOf="parent"
             card_view:layout_constraintTop_toBottomOf="@+id/card_list_item_info_title_text_view"
-            tools:text="Info Date"/>
+            tools:text="Info Date"
+            android:layout_marginStart="8dp"/>
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>
