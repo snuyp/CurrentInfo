@@ -109,6 +109,8 @@ public class InfoFragment extends Fragment {
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_TEXT, getDataReport());
+//                i = Intent.createChooser(i,)
+//                i.setType("image/png");
                 startActivity(i);
             }
         });
@@ -118,8 +120,10 @@ public class InfoFragment extends Fragment {
 
     private String getDataReport() {
 //        TODO
-        String report = mInfo.getTitle()+" " + mInfo.getSimpleDate();
-        return report;
+        String stringReport = mInfo.getTitle()+" " + mInfo.getSimpleDate();
+//        mInfo.setSent(true);
+        mSentCheckBox.setChecked(true);
+        return stringReport;
     }
 
     @Override
