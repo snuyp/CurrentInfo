@@ -150,7 +150,7 @@ public class InfoFragment extends Fragment {
     {
         if(mPhotoFile == null || !mPhotoFile.exists())
         {
-//            mPhotoView.setImageDrawable(null);
+            mPhotoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         }
 
         else

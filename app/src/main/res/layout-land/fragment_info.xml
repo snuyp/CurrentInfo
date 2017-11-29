@@ -10,10 +10,11 @@
     <ImageView
         android:id="@+id/photo_ImageView"
         android:layout_width="300dp"
-        android:layout_height="116dp"
+        android:layout_height="141dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:scaleType="fitXY"
         android:src="@android:drawable/ic_menu_camera"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.028"
@@ -24,12 +25,12 @@
         android:id="@+id/textView3"
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="33dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="@string/info_title_label"
+        android:layout_marginTop="8dp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +39,7 @@
     <EditText
         android:id="@+id/info_title"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_height="41dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -47,23 +48,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView3"/>
 
     <TextView
         android:id="@+id/textView4"
         style="?android:listSeparatorTextViewStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="30dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+
         android:gravity="center"
         android:text="@string/info_details_label"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"/>
+        app:layout_constraintStart_toEndOf="@+id/photo_ImageView"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
     <Button
@@ -75,8 +76,9 @@
         android:layout_marginTop="8dp"
         android:background="#0d000000"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toEndOf="@+id/photo_ImageView"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView4"/>
 
     <Button
         android:id="@+id/info_report"
@@ -85,7 +87,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="#0d000000"
+
         android:text="@string/info_report_text"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
@@ -114,17 +116,18 @@
         android:id="@+id/info_delete"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
+
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="#0d000000"
         android:gravity="center"
         android:text="@string/info_delete"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.983"
+        app:layout_constraintHorizontal_bias="0.978"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/info_title"/>
+        app:layout_constraintTop_toBottomOf="@+id/info_title"
+        app:layout_constraintVertical_bias="1.0"/>
 </android.support.constraint.ConstraintLayout>

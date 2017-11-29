@@ -9,6 +9,7 @@
     <ImageView
         android:id="@+id/photo_ImageView"
         android:layout_width="match_parent"
+        android:scaleType="fitXY"
         android:layout_height="150dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -65,7 +66,7 @@
 
     <Button
         android:id="@+id/info_date"
-        android:layout_width="250dp"
+        android:layout_width="364dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -104,7 +105,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="@string/info_report_text"
-        android:background="#0d000000"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.028"
         app:layout_constraintStart_toStartOf="parent"
@@ -118,7 +119,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:gravity="center"
-        android:background="#0d000000"
+
         android:text="@string/info_delete"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
