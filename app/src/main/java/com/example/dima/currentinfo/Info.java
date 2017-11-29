@@ -57,4 +57,9 @@ public class Info {
     public void setTitle(String title) {
         mTitle = title;
     }
+
+    public String getPhotoFilename()
+    {
+        return "IMG_" +getId().toString()+".jpg";
+    }
 }

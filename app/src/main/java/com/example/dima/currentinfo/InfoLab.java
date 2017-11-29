@@ -4,11 +4,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 
 import com.example.dima.currentinfo.database.InfoBaseHelper;
 import com.example.dima.currentinfo.database.InfoCursorWrapper;
 import com.example.dima.currentinfo.database.InfoDbSchema.InfoTable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -21,7 +23,6 @@ public class InfoLab {
     private static InfoLab sInfoLab;
     private Context mContext;
     private SQLiteDatabase mDatabase;
-
     public static InfoLab get(Context context) {
         if (sInfoLab == null) {
             sInfoLab = new InfoLab(context);
@@ -55,7 +56,15 @@ public class InfoLab {
         );
         return new InfoCursorWrapper(cursor);
     }
-
+    public File getPhotoFile(Info info)
+    {
+        File externalFilesDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if(externalFilesDir == null)
+        {
+            return null;
+        }
+        return new File(externalFilesDir, info.getPhotoFilename());
+    }
 
     public void updateInfo(Info info)
     {

@@ -2,7 +2,11 @@ package com.example.dima.currentinfo;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,7 +19,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import java.io.File;
 import java.util.Date;
 import java.util.UUID;
 
@@ -27,6 +34,7 @@ public class InfoFragment extends Fragment {
     private static final String ARG_INFO_ID = "info_id";
     private static final String DIALOG_DATE = "DialogDate";
     private static final int REQUEST_DATE = 0;
+    private static final int REQUEST_PHOTO = 1;
 
     private Info mInfo;
     private EditText mTitleField;
@@ -34,6 +42,8 @@ public class InfoFragment extends Fragment {
     private CheckBox mSentCheckBox;
     private Button mDeleteButton;
     private Button mReportButton;
+    private ImageView mPhotoView;
+    private File mPhotoFile;
     public static InfoFragment newInstance (UUID infoId)
     {
         Bundle args = new Bundle();
@@ -47,8 +57,8 @@ public class InfoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UUID uuid = (UUID) getArguments().getSerializable(ARG_INFO_ID);
-
         mInfo = InfoLab.get(getActivity()).getInfo(uuid);
+        mPhotoFile = InfoLab.get(getActivity()).getPhotoFile(mInfo);
     }
 
     @Override
@@ -115,13 +125,45 @@ public class InfoFragment extends Fragment {
             }
         });
 
+        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        PackageManager pm = getActivity().getPackageManager();
+//        boolean canTakePhoto  = mPhotoFile != null && captureImage.resolveActivity(pm) != null;
+//        mPhotoView.setEnabled(canTakePhoto);
+//        if(canTakePhoto)
+//        {
+            Uri uri = Uri.fromFile(mPhotoFile);
+            captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+//        }
+
+        mPhotoView = (ImageView) v.findViewById(R.id.photo_ImageView);
+        mPhotoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(captureImage, REQUEST_PHOTO);
+            }
+        });
+        updatePhotoView();
+
         return v;
     }
+    private void  updatePhotoView()
+    {
+        if(mPhotoFile == null || !mPhotoFile.exists())
+        {
+//            mPhotoView.setImageDrawable(null);
+        }
 
+        else
+        {
+            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
+            mPhotoView.setImageBitmap(bitmap);
+//            Toast.makeText(getActivity(),R.string.photo_was_taken ,Toast.LENGTH_SHORT).show();
+        }
+
+    }
     private String getDataReport() {
 //        TODO
         String stringReport = mInfo.getTitle()+" " + mInfo.getSimpleDate();
-//        mInfo.setSent(true);
         mSentCheckBox.setChecked(true);
         return stringReport;
     }
@@ -137,6 +179,10 @@ public class InfoFragment extends Fragment {
             Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mInfo.setDate(date);
             mDateButton.setText(mInfo.getSimpleDate());
+        }
+        else if(requestCode == REQUEST_PHOTO)
+        {
+            updatePhotoView();
         }
     }
 

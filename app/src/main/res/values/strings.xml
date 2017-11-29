@@ -16,4 +16,6 @@
     <string name="return_dialog">Return</string>
     <string name="sure_delete">Are you sure delete this data?</string>
     <string name="info_report_text">Send</string>
+
+    <string name="photo_was_taken">Photo was taken</string>
 </resources>
