@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -20,6 +21,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import java.io.File;
@@ -44,8 +46,8 @@ public class InfoFragment extends Fragment {
     private Button mReportButton;
     private ImageView mPhotoView;
     private File mPhotoFile;
-    public static InfoFragment newInstance (UUID infoId)
-    {
+
+    public static InfoFragment newInstance(UUID infoId) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_INFO_ID, infoId);
 
@@ -53,6 +55,7 @@ public class InfoFragment extends Fragment {
         infoFragment.setArguments(args);
         return infoFragment;
     }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,8 +65,8 @@ public class InfoFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_info,container,false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_info, container, false);
 
         mTitleField = (EditText) v.findViewById(R.id.info_title);
         mTitleField.setText(mInfo.getTitle());
@@ -126,13 +129,13 @@ public class InfoFragment extends Fragment {
         });
 
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        PackageManager pm = getActivity().getPackageManager();
+//        PackageManager pm = getActivity().getPackageManager();
 //        boolean canTakePhoto  = mPhotoFile != null && captureImage.resolveActivity(pm) != null;
 //        mPhotoView.setEnabled(canTakePhoto);
 //        if(canTakePhoto)
 //        {
-            Uri uri = Uri.fromFile(mPhotoFile);
-            captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        Uri uri = Uri.fromFile(mPhotoFile);
+        captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 //        }
 
         mPhotoView = (ImageView) v.findViewById(R.id.photo_ImageView);
@@ -142,46 +145,61 @@ public class InfoFragment extends Fragment {
                 startActivityForResult(captureImage, REQUEST_PHOTO);
             }
         });
+        mPhotoView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showPopupMenu(v);
+                return true;
+            }
+        });
         updatePhotoView();
-
         return v;
     }
-    private void  updatePhotoView()
-    {
-        if(mPhotoFile == null || !mPhotoFile.exists())
-        {
-            mPhotoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        }
 
-        else
-        {
-            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
-            mPhotoView.setImageBitmap(bitmap);
-//            Toast.makeText(getActivity(),R.string.photo_was_taken ,Toast.LENGTH_SHORT).show();
-        }
+    private void showPopupMenu(View v) {
+        PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+        popupMenu.inflate(R.menu.photo_popup_menu);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
 
-    }
-    private String getDataReport() {
-//        TODO
-        String stringReport = mInfo.getTitle()+" " + mInfo.getSimpleDate();
-        mSentCheckBox.setChecked(true);
-        return stringReport;
+                    case R.id.to_increase_photo:
+                        Toast.makeText(getActivity(),
+                                "Вы выбрали PopupMenu 1",
+                                Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.delete_photo:
+                        Toast.makeText(getActivity(),
+                                "Вы выбрали PopupMenu 2",
+                                Toast.LENGTH_SHORT).show();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu menu) {
+                Toast.makeText(getActivity(), "onDismiss",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+        popupMenu.show();
+
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode != Activity.RESULT_OK)
-        {
+        if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        if(requestCode == REQUEST_DATE)
-        {
+        if (requestCode == REQUEST_DATE) {
             Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mInfo.setDate(date);
             mDateButton.setText(mInfo.getSimpleDate());
-        }
-        else if(requestCode == REQUEST_PHOTO)
-        {
+        } else if (requestCode == REQUEST_PHOTO) {
             updatePhotoView();
         }
     }
@@ -191,5 +209,23 @@ public class InfoFragment extends Fragment {
         super.onPause();
 
         InfoLab.get(getActivity()).updateInfo(mInfo);
+    }
+
+    private void updatePhotoView() {
+        if (mPhotoFile == null || !mPhotoFile.exists()) {
+            mPhotoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        } else {
+            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
+            mPhotoView.setImageBitmap(bitmap);
+//            Toast.makeText(getActivity(),R.string.photo_was_taken ,Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private String getDataReport() {
+//        TODO
+        String stringReport = mInfo.getTitle() + " " + mInfo.getSimpleDate();
+        mSentCheckBox.setChecked(true);
+        return stringReport;
     }
 }
