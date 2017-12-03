@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -46,6 +47,7 @@ public class InfoFragment extends Fragment {
     private Button mReportButton;
     private ImageView mPhotoView;
     private File mPhotoFile;
+    public Bitmap bitmap;
 
     public static InfoFragment newInstance(UUID infoId) {
         Bundle args = new Bundle();
@@ -129,14 +131,9 @@ public class InfoFragment extends Fragment {
         });
 
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        PackageManager pm = getActivity().getPackageManager();
-//        boolean canTakePhoto  = mPhotoFile != null && captureImage.resolveActivity(pm) != null;
-//        mPhotoView.setEnabled(canTakePhoto);
-//        if(canTakePhoto)
-//        {
         Uri uri = Uri.fromFile(mPhotoFile);
         captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-//        }
+
 
         mPhotoView = (ImageView) v.findViewById(R.id.photo_ImageView);
         mPhotoView.setOnClickListener(new View.OnClickListener() {
@@ -215,7 +212,7 @@ public class InfoFragment extends Fragment {
         if (mPhotoFile == null || !mPhotoFile.exists()) {
             mPhotoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         } else {
-            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
+            bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
             mPhotoView.setImageBitmap(bitmap);
 //            Toast.makeText(getActivity(),R.string.photo_was_taken ,Toast.LENGTH_SHORT).show();
         }

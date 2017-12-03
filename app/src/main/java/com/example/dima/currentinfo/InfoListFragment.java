@@ -3,11 +3,10 @@ package com.example.dima.currentinfo;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,11 +17,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -77,11 +77,9 @@ public class InfoListFragment extends Fragment {
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.getSupportActionBar().setSubtitle(subtitle);
     }
-
     private void updateUI() {
         InfoLab infoLab = InfoLab.get(getActivity());
         List<Info> infoList = infoLab.getInfoList();
-
         if (mAdapter == null) {
             mAdapter = new InfoAdapter(infoList);
             mInfoRecyclerView.setAdapter(mAdapter);
@@ -120,7 +118,6 @@ public class InfoListFragment extends Fragment {
         private Info mInfo;
 
 
-
         public InfoHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
@@ -128,7 +125,6 @@ public class InfoListFragment extends Fragment {
             mTitleTextView = (TextView) itemView.findViewById(R.id.card_list_item_info_title_text_view);
             mDateTextView = (TextView) itemView.findViewById(R.id.card_list_item_info_date_text_view);
             mSentCheckBox = (CheckBox) itemView.findViewById(R.id.card_list_item_info_sent_check_box);
-
         }
 
         public void bindInfo(Info info) {
@@ -136,8 +132,9 @@ public class InfoListFragment extends Fragment {
             mTitleTextView.setText(mInfo.getTitle());
             mDateTextView.setText(mInfo.getSimpleDate());
             updateSentCheckBox();
-        }
 
+
+        }
         private void updateSentCheckBox() {
             mSentCheckBox.setEnabled(false);
             mSentCheckBox.setChecked(mInfo.isSent());
@@ -152,9 +149,9 @@ public class InfoListFragment extends Fragment {
         public void onClick(View v) {
             Intent intent = InfoPagerActivity.newIntent(getActivity(), mInfo.getId());
             startActivity(intent);
-            mCurrentPosition = getAdapterPosition();
-//            Toast.makeText(getActivity(),mInfo.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
+//            mCurrentPosition = getAdapterPosition();
         }
+
 
         @Override
         public boolean onLongClick(View view) {
@@ -211,7 +208,5 @@ public class InfoListFragment extends Fragment {
         public int getItemCount() {
             return mInfoList.size();
         }
-
-
     }
 }
