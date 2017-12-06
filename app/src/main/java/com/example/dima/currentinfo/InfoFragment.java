@@ -47,7 +47,7 @@ public class InfoFragment extends Fragment {
     private Button mReportButton;
     private ImageView mPhotoView;
     private File mPhotoFile;
-    public Bitmap bitmap;
+
 
     public static InfoFragment newInstance(UUID infoId) {
         Bundle args = new Bundle();
@@ -212,7 +212,7 @@ public class InfoFragment extends Fragment {
         if (mPhotoFile == null || !mPhotoFile.exists()) {
             mPhotoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         } else {
-            bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
+            Bitmap bitmap;   bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
             mPhotoView.setImageBitmap(bitmap);
 //            Toast.makeText(getActivity(),R.string.photo_was_taken ,Toast.LENGTH_SHORT).show();
         }
