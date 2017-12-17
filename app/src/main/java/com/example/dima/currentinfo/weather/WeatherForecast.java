@@ -1,6 +1,5 @@
 package com.example.dima.currentinfo.weather;
 
-import com.example.dima.currentinfo.weather.Weather;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

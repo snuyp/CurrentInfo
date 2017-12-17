@@ -9,59 +9,7 @@ import java.util.List;
  * Created by Dima on 17.12.2017.
  */
 public class Weather {
-    public class Wind {
-        @SerializedName("speed")
-        @Expose
-        private double speed;
-        @SerializedName("deg")
-        @Expose
-        private double deg;
 
-        public double getSpeed() {
-            return speed;
-        }
-
-        public void setSpeed(double speed) {
-            this.speed = speed;
-        }
-
-        public double getDeg() {
-            return deg;
-        }
-
-        public void setDeg(double deg) {
-            this.deg = deg;
-        }
-    }
-
-    public class Clouds {
-
-        @SerializedName("all")
-        @Expose
-        private int all;
-
-        public int getAll() {
-            return all;
-        }
-
-        public void setAll(int all) {
-            this.all = all;
-        }
-    }
-    public class Snow {
-
-        @SerializedName("3h")
-        @Expose
-        private double _3h;
-
-        public double get3h() {
-            return _3h;
-        }
-
-        public void set3h(double _3h) {
-            this._3h = _3h;
-        }
-    }
     @SerializedName("dt")
     @Expose
     private int dt;
@@ -222,6 +170,59 @@ public class Weather {
             this.tempKf = tempKf;
         }
 
+    }
+    public class Wind {
+        @SerializedName("speed")
+        @Expose
+        private double speed;
+        @SerializedName("deg")
+        @Expose
+        private double deg;
+
+        public double getSpeed() {
+            return speed;
+        }
+
+        public void setSpeed(double speed) {
+            this.speed = speed;
+        }
+
+        public double getDeg() {
+            return deg;
+        }
+
+        public void setDeg(double deg) {
+            this.deg = deg;
+        }
+    }
+
+    public class Clouds {
+
+        @SerializedName("all")
+        @Expose
+        private int all;
+
+        public int getAll() {
+            return all;
+        }
+
+        public void setAll(int all) {
+            this.all = all;
+        }
+    }
+    public class Snow {
+
+        @SerializedName("3h")
+        @Expose
+        private double _3h;
+
+        public double get3h() {
+            return _3h;
+        }
+
+        public void set3h(double _3h) {
+            this._3h = _3h;
+        }
     }
 
 }
