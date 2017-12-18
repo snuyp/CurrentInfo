@@ -43,7 +43,7 @@ public class WeatherFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.weather_fragment,container,false);
+        View v = inflater.inflate(R.layout.fragment_weather,container,false);
         mWeatherTemp = (TextView) v.findViewById(R.id.weather_temp);
         mGetWeatherButton = (Button) v.findViewById(R.id.get_weather);
         callWeather();
