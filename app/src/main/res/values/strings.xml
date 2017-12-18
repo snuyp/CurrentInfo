@@ -19,4 +19,9 @@
 
     <string name="photo_was_taken">Photo was taken</string>
     <string name="To_increase">To increase</string>
+
+    <string-array name="titles">
+        <item>Home</item>
+        <item>Weather</item>
+    </string-array>
 </resources>

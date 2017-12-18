@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.dima.currentinfo.weather.ApiService;
 import com.example.dima.currentinfo.weather.Weather;
@@ -24,7 +26,9 @@ import retrofit2.Response;
 public class WeatherFragment extends Fragment{
     public final String TAG = "WEATHER";
     private ApiService mApiService;
-
+    private TextView mWeatherTemp;
+    private TextView mWeatherCity;
+    private Button mGetWeatherButton;
     public static WeatherFragment newInstance()
     {
         return new WeatherFragment();
@@ -39,7 +43,11 @@ public class WeatherFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View v = inflater.inflate(R.layout.weather_fragment,container,false);
+        mWeatherTemp = (TextView) v.findViewById(R.id.weather_temp);
+        mGetWeatherButton = (Button) v.findViewById(R.id.get_weather);
+        callWeather();
+        return v;
     }
     private void callWeather()
     {
@@ -58,14 +66,13 @@ public class WeatherFragment extends Fragment{
                 Weather weather = response.body();
                 if(response.isSuccessful())
                 {
-
-
+                    mWeatherTemp.setText(weather.getMain().getTemp());
                 }
             }
 
             @Override
             public void onFailure(Call<Weather> call, Throwable t) {
-                Log.e(TAG, "failure");
+                Log.e(TAG, "onFailure " + t.toString());
             }
         });
 

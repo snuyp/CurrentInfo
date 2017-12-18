@@ -106,24 +106,24 @@ public class Weather {
         @Expose
         private int tempKf;
 
-        public double getTemp() {
-            return temp;
+        public String getTemp() {
+            return String.valueOf(temp);
         }
 
         public void setTemp(double temp) {
             this.temp = temp;
         }
 
-        public double getTempMin() {
-            return tempMin;
+        public String getTempMin() {
+            return String.valueOf(tempMin);
         }
 
         public void setTempMin(double tempMin) {
             this.tempMin = tempMin;
         }
 
-        public double getTempMax() {
-            return tempMax;
+        public String getTempMax() {
+            return String.valueOf(tempMax);
         }
 
         public void setTempMax(double tempMax) {
