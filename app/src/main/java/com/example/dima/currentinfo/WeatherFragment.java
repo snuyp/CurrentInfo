@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.example.dima.currentinfo.weather.ApiService;
 import com.example.dima.currentinfo.weather.Weather;
 import com.example.dima.currentinfo.weather.WeatherApi;
-import com.example.dima.currentinfo.weather.WeatherForecast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,7 +42,7 @@ public class WeatherFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_weather,container,false);
+        View v = inflater.inflate(R.layout.weather_fragment,container,false);
         mWeatherTemp = (TextView) v.findViewById(R.id.weather_temp);
         mGetWeatherButton = (Button) v.findViewById(R.id.get_weather);
         callWeather();
