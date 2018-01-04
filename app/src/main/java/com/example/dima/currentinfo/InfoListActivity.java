@@ -1,10 +1,6 @@
 package com.example.dima.currentinfo;
 
-import android.annotation.SuppressLint;
-
-import android.app.ActionBar;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,15 +9,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toolbar;
 
 /**
  * Created by Dima on 13.11.2017.
@@ -29,9 +21,9 @@ import android.widget.Toolbar;
 
 public class InfoListActivity extends SingleFragmentActivity {
     private String[] mTitles;
-    private ListView drawerList;
+    private ListView mDrawerList;
     private int mPosition = 0;
-    ActionBarDrawerToggle drawerToggle;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
     protected Fragment createFragment() {
@@ -42,7 +34,7 @@ public class InfoListActivity extends SingleFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mTitles = getResources().getStringArray(R.array.titles);
-        drawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         if (savedInstanceState != null) {
@@ -52,11 +44,11 @@ public class InfoListActivity extends SingleFragmentActivity {
             selectItem(0);
         }
 
-        drawerList.setAdapter(new ArrayAdapter<String>(
+        mDrawerList.setAdapter(new ArrayAdapter<String>(
                 this, android.R.layout.simple_list_item_activated_1, mTitles));
-        drawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open_drawer, R.string.close_drawer) {
+        mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open_drawer, R.string.close_drawer) {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
@@ -69,7 +61,7 @@ public class InfoListActivity extends SingleFragmentActivity {
                 invalidateOptionsMenu();
             }
         };
-        drawerLayout.addDrawerListener(drawerToggle);
+        drawerLayout.addDrawerListener(mDrawerToggle);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -108,7 +100,7 @@ public class InfoListActivity extends SingleFragmentActivity {
                 .commit();
         setActionBarTitle(position);
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerLayout.closeDrawer(drawerList);
+        drawerLayout.closeDrawer(mDrawerList);
     }
 
     private void setActionBarTitle(int position) {
@@ -121,21 +113,18 @@ public class InfoListActivity extends SingleFragmentActivity {
         }
         getSupportActionBar().setTitle(title);
     }
-
-
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
+        mDrawerToggle.syncState();
     }
 }

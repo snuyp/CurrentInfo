@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class WeatherApi {
     public static String KEY = "414028c19422cc451a324493b5df909b";
     public static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
-    private static Retrofit retrofit =null;
+    private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
         if (retrofit == null) {
