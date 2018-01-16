@@ -2,6 +2,7 @@ package com.example.dima.currentinfo;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -22,7 +23,7 @@ public class Info {
 
     public Info(UUID id) {
         mId = id;
-        mSimpleDate = new SimpleDateFormat("E dd.MM.yyyy '[' hh:mm:ss ']'" );
+        mSimpleDate = new SimpleDateFormat("E dd.MM.yyyy '[' HH:mm:ss ']'" ,new Locale("en","US"));
     }
 
     public String getSimpleDate() {

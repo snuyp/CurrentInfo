@@ -1,16 +1,63 @@
 package com.example.dima.currentinfo.weather;
 
-import android.content.Intent;
+import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Dima on 17.12.2017.
  */
 public class Weather {
+    @SerializedName("sys")
+    private Sys sys;
+    @SerializedName("main")
+    private Main main;
+    @SerializedName("wind")
+    private Wind wind;
+    @SerializedName("name")
+    private String city;
+    @SerializedName("dt")
+    private long timestamp;
+
+    @SerializedName("weather")
+    private List<WeatherDescription> description;
+
+    public String getDate()
+    {
+        Date date=new Date(timestamp * 1000);
+        SimpleDateFormat df2 = new SimpleDateFormat("E dd.MM.yyyy",new Locale("en","US"));
+        Log.e("day",df2.format(date));
+
+        return df2.format(date);
+    }
+
+    public String getIcon() {
+        return "http://openweathermap.org/img/w/" + description.get(0).icon + ".png";
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public Sys getSys() {
+        return sys;
+    }
+
+    public Main getMain() {
+        return main;
+    }
+
+    public Wind getWind() {
+        Log.e("speed", wind.getSpeed());
+        return wind;
+    }
+
     public class Main {
         @SerializedName("temp")
         private Double temp;
@@ -22,7 +69,6 @@ public class Weather {
         private Double tempMin;
         @SerializedName("temp_max")
         private Double tempMax;
-
 
         public String getTemp() {
             return String.valueOf(temp.intValue()) + "\u00B0";
@@ -43,7 +89,6 @@ public class Weather {
         public String getTempMin() {
             return String.valueOf(tempMin.intValue()) + "\u00B0";
         }
-
     }
 
     public class Wind {
@@ -51,6 +96,7 @@ public class Weather {
         private Double deg;
 
         public String getSpeed() {
+
             return String.valueOf(speed) + " m/s";
         }
 
@@ -61,94 +107,31 @@ public class Weather {
 
     public class Sys {
         private String country;
-        private Integer sunrise;
-        private Integer sunset;
+        private long sunrise ;
+        private long sunset;
 
         public String getCountry() {
             return country;
         }
-        public String getSunrise() {
-            return String.valueOf(sunrise);
+        public String getSunset()
+        {
+            return "↓ "+ dateText(sunset);
         }
-        public String getSunset() {
-            return String.valueOf(sunset);
+        public String getSunrise()
+        {
+            return "↑ " + dateText(sunrise);
         }
-    }
-
-    public class Rain {
-        private Integer _3h;
-
-        public Integer get3h() {
-            return _3h;
-        }
-
-        public void set3h(Integer _3h) {
-            this._3h = _3h;
-        }
-    }
-
-
-    public class Clouds {
-        private Integer all;
-
-        public String getAll() {
-            return all + " %";
+        private String dateText(long dateText)
+        {
+            Date date=new Date(dateText * 1000);
+            SimpleDateFormat df2 = new SimpleDateFormat("HH:mm ",new Locale("en","US"));
+            return  df2.format(date);
         }
 
     }
 
-    @SerializedName("sys")
-    private Sys sys;
-    @SerializedName("main")
-    private Main main;
-    @SerializedName("wind")
-    private Wind wind;
-    @SerializedName("rain")
-    private Rain rain;
-    @SerializedName("clouds")
-    private Clouds clouds;
-    @SerializedName("name")
-    private String city;
-    @SerializedName("dt")
-    private String timestamp;
-    @SerializedName("description")
-    private String description;
-
-    public String getDescription() {
-        return description;
+    public class WeatherDescription {
+        String icon;
     }
-
-    public String getCity() {
-        return city;
-    }
-
-    public Sys getSys() {
-        return sys;
-    }
-
-//    public void setSys(Sys sys) {
-//        this.sys = sys;
-//    }
-
-    //    public List<Weather> getWeather() {
-//        return weather;
-//    }
-//
-    public Main getMain() {
-        return main;
-    }
-
-    public Wind getWind() {
-        return wind;
-    }
-
-    public Rain getRain() {
-        return rain;
-    }
-
-    public Clouds getClouds() {
-        return clouds;
-    }
-
 
 }
