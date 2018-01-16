@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.FileProvider;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -24,6 +25,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.Date;
@@ -131,7 +134,9 @@ public class InfoFragment extends Fragment {
         });
 
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Uri uri = Uri.fromFile(mPhotoFile);
+        Uri uri = FileProvider.getUriForFile(getContext(),
+                getContext().getApplicationContext().getPackageName() + ".provider", mPhotoFile);
+        //Uri uri = Uri.fromFile(mPhotoFile);
         captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 
 
@@ -210,9 +215,10 @@ public class InfoFragment extends Fragment {
 
     private void updatePhotoView() {
         if (mPhotoFile == null || !mPhotoFile.exists()) {
+            //Picasso.with(getContext()).load(mPhotoFile).into(mPhotoView);
             mPhotoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         } else {
-            Bitmap bitmap;   bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
+            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
             mPhotoView.setImageBitmap(bitmap);
 //            Toast.makeText(getActivity(),R.string.photo_was_taken ,Toast.LENGTH_SHORT).show();
         }
