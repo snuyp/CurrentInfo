@@ -9,22 +9,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.dima.currentinfo.weather.ApiService;
 import com.example.dima.currentinfo.weather.Weather;
 import com.example.dima.currentinfo.weather.WeatherApi;
 import com.example.dima.currentinfo.weather.WeatherForecast;
-import com.squareup.picasso.Picasso;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -70,22 +64,22 @@ public class WeatherFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.weather_fragment, container, false);
-        mProgressBar = (ProgressBar) v.findViewById(R.id.weatherProgressBar);
+        mProgressBar = v.findViewById(R.id.weatherProgressBar);
         mProgressBar.setVisibility(View.VISIBLE);
-        mWeatherTemp = (TextView) v.findViewById(R.id.weather_temp);
-        mWeatherTempMin = (TextView) v.findViewById(R.id.weather_t_min);
-        mWeatherTempMax = (TextView) v.findViewById(R.id.weather_t_max);
+        mWeatherTemp = v.findViewById(R.id.weather_temp);
+        mWeatherTempMin = v.findViewById(R.id.weather_t_min);
+        mWeatherTempMax = v.findViewById(R.id.weather_t_max);
 
-        mWeatherPressure = (TextView) v.findViewById(R.id.weather_pressure);
-        mWeatherHumidity = (TextView) v.findViewById(R.id.weather_humidity);
-        mWeatherCity = (TextView) v.findViewById(R.id.weather_city);
-        mWeatherSunrise = (TextView) v.findViewById(R.id.weather_sunrise);
-        mWeatherSunset = (TextView) v.findViewById(R.id.weather_sunset);
-        mWeatherWindDirection = (TextView) v.findViewById(R.id.weather_wind_direction);
-        mWeatherWindSpeed = (TextView) v.findViewById(R.id.weather_wind_speed);
+        mWeatherPressure = v.findViewById(R.id.weather_pressure);
+        mWeatherHumidity = v.findViewById(R.id.weather_humidity);
+        mWeatherCity = v.findViewById(R.id.weather_city);
+        mWeatherSunrise = v.findViewById(R.id.weather_sunrise);
+        mWeatherSunset = v.findViewById(R.id.weather_sunset);
+        mWeatherWindDirection = v.findViewById(R.id.weather_wind_direction);
+        mWeatherWindSpeed = v.findViewById(R.id.weather_wind_speed);
 
 
-        mWeatherImage = (ImageView) v.findViewById(R.id.weather_image);
+        mWeatherImage =  v.findViewById(R.id.weather_image);
 
 
         callWeather();
@@ -117,7 +111,7 @@ public class WeatherFragment extends Fragment {
                     mWeatherTempMax.setText(weather.getMain().getTempMax());
                     mWeatherTempMin.setText(weather.getMain().getTempMin());
                     mWeatherCity.setText(weather.getCity().split(" ")[1]);
-                    Picasso.with(getContext()).load(weather.getIcon()).into(mWeatherImage);
+                    Glide.with(getContext()).load(weather.getIcon()).into(mWeatherImage);
                     updateSubtitle(weather.getDate() + " [" + weather.getSys().getCountry() + "] ");
 
                     mWeatherHumidity.setText(getResources().getString(R.string.humidity) + " " + weather.getMain().getHumidity());

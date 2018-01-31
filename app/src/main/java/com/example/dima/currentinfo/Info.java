@@ -1,5 +1,6 @@
 package com.example.dima.currentinfo;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -9,7 +10,7 @@ import java.util.UUID;
  * Created by Dima on 10.11.2017.
  */
 
-public class Info {
+public class Info implements Serializable{
     private UUID mId;
     private String mTitle;
     private Date mDate = new Date();

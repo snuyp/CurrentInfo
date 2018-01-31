@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -41,9 +43,9 @@ public class InfoListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_info_list, container, false);
-        mInfoRecyclerView = (RecyclerView) v.findViewById(R.id.info_recycler_view);
+        mInfoRecyclerView = v.findViewById(R.id.info_recycler_view);
         mInfoRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         updateUI();
@@ -122,9 +124,9 @@ public class InfoListFragment extends Fragment {
             super(itemView);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
-            mTitleTextView = (TextView) itemView.findViewById(R.id.card_list_item_info_title_text_view);
-            mDateTextView = (TextView) itemView.findViewById(R.id.card_list_item_info_date_text_view);
-            mSentCheckBox = (CheckBox) itemView.findViewById(R.id.card_list_item_info_sent_check_box);
+            mTitleTextView = itemView.findViewById(R.id.card_list_item_info_title_text_view);
+            mDateTextView = itemView.findViewById(R.id.card_list_item_info_date_text_view);
+            mSentCheckBox = itemView.findViewById(R.id.card_list_item_info_sent_check_box);
         }
 
         public void bindInfo(Info info) {
@@ -179,8 +181,7 @@ public class InfoListFragment extends Fragment {
             return true;
         }
     }
-
-    private class InfoAdapter extends RecyclerView.Adapter<InfoHolder> {
+    private class InfoAdapter extends RecyclerView.Adapter<InfoHolder>  {
         private List<Info> mInfoList;
 
         public void setInfoList(List<Info> infoList) {

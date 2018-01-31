@@ -1,10 +1,10 @@
 package com.example.dima.currentinfo;
 
 import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -26,7 +26,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.util.Date;
@@ -43,11 +43,8 @@ public class InfoFragment extends Fragment {
     private static final int REQUEST_PHOTO = 1;
 
     private Info mInfo;
-    private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mSentCheckBox;
-    private Button mDeleteButton;
-    private Button mReportButton;
     private ImageView mPhotoView;
     private File mPhotoFile;
 
@@ -73,9 +70,9 @@ public class InfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_info, container, false);
 
-        mTitleField = (EditText) v.findViewById(R.id.info_title);
-        mTitleField.setText(mInfo.getTitle());
-        mTitleField.addTextChangedListener(new TextWatcher() {
+        EditText titleField = v.findViewById(R.id.info_title);
+        titleField.setText(mInfo.getTitle());
+        titleField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -92,7 +89,7 @@ public class InfoFragment extends Fragment {
             }
         });
 
-        mDateButton = (Button) v.findViewById(R.id.info_date);
+        mDateButton = v.findViewById(R.id.info_date);
         mDateButton.setText(mInfo.getSimpleDate());
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +101,7 @@ public class InfoFragment extends Fragment {
             }
         });
 
-        mSentCheckBox = (CheckBox) v.findViewById(R.id.info_sent);
+        mSentCheckBox = v.findViewById(R.id.info_sent);
         mSentCheckBox.setChecked(mInfo.isSent());
         mSentCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -112,16 +109,16 @@ public class InfoFragment extends Fragment {
                 mInfo.setSent(b);
             }
         });
-        mDeleteButton = (Button) v.findViewById(R.id.info_delete);
-        mDeleteButton.setOnClickListener(new View.OnClickListener() {
+        Button deleteButton = v.findViewById(R.id.info_delete);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 InfoLab.get(getActivity()).deleteInfo(mInfo.getId());
                 getActivity().finish();
             }
         });
-        mReportButton = (Button) v.findViewById(R.id.info_report);
-        mReportButton.setOnClickListener(new View.OnClickListener() {
+        Button reportButton = v.findViewById(R.id.info_report);
+        reportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(Intent.ACTION_SEND);
@@ -140,7 +137,7 @@ public class InfoFragment extends Fragment {
         captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 
 
-        mPhotoView = (ImageView) v.findViewById(R.id.photo_ImageView);
+        mPhotoView = v.findViewById(R.id.photo_ImageView);
         mPhotoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,27 +162,13 @@ public class InfoFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
-
                     case R.id.to_increase_photo:
-                        Toast.makeText(getActivity(),
-                                "Вы выбрали PopupMenu 1",
-                                Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.delete_photo:
-                        Toast.makeText(getActivity(),
-                                "Вы выбрали PopupMenu 2",
-                                Toast.LENGTH_SHORT).show();
-                        return true;
-                    default:
-                        return false;
+                        FragmentManager fragment = getFragmentManager();
+                        PhotoViewFragment photoView = PhotoViewFragment.newInstance(mInfo);
+                        photoView.setTargetFragment(InfoFragment.this, REQUEST_PHOTO);
+                        photoView.show(fragment, ARG_INFO_ID);
                 }
-            }
-        });
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-            @Override
-            public void onDismiss(PopupMenu menu) {
-                Toast.makeText(getActivity(), "onDismiss",
-                        Toast.LENGTH_SHORT).show();
+                return true;
             }
         });
         popupMenu.show();
@@ -215,12 +198,14 @@ public class InfoFragment extends Fragment {
 
     private void updatePhotoView() {
         if (mPhotoFile == null || !mPhotoFile.exists()) {
-            //Picasso.with(getContext()).load(mPhotoFile).into(mPhotoView);
             mPhotoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         } else {
-            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
-            mPhotoView.setImageBitmap(bitmap);
-//            Toast.makeText(getActivity(),R.string.photo_was_taken ,Toast.LENGTH_SHORT).show();
+          Glide.with(this)
+                    .load(mPhotoFile)
+                    .into(mPhotoView);
+
+            //mPhotoView.setImageBitmap(bitmap);
+//
         }
 
     }

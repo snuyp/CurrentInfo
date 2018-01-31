@@ -34,8 +34,8 @@ public class InfoListActivity extends SingleFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mTitles = getResources().getStringArray(R.array.titles);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = findViewById(R.id.left_drawer);
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
 
         if (savedInstanceState != null) {
             mPosition = savedInstanceState.getInt("position");
@@ -88,7 +88,7 @@ public class InfoListActivity extends SingleFragmentActivity {
                 fragment = new InfoListFragment();
                 break;
             case 1:
-                fragment = WeatherFragment.newInstance();
+                fragment = new WeatherFragment();
                 break;
             default:
                 fragment = null;
@@ -99,7 +99,7 @@ public class InfoListActivity extends SingleFragmentActivity {
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
         setActionBarTitle(position);
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         drawerLayout.closeDrawer(mDrawerList);
     }
 
