@@ -32,7 +32,6 @@ public class Weather {
     {
         Date date=new Date(timestamp * 1000);
         SimpleDateFormat df2 = new SimpleDateFormat("E dd.MM.yyyy",new Locale("en","US"));
-        Log.e("day",df2.format(date));
 
         return df2.format(date);
     }

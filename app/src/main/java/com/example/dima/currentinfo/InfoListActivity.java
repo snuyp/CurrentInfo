@@ -15,6 +15,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.dima.currentinfo.weather.WeatherFragment;
+
 /**
  * Created by Dima on 13.11.2017.
  */

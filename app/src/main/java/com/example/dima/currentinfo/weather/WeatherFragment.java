@@ -1,6 +1,6 @@
-package com.example.dima.currentinfo;
+package com.example.dima.currentinfo.weather;
 
-import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,10 +15,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.dima.currentinfo.weather.ApiService;
-import com.example.dima.currentinfo.weather.Weather;
-import com.example.dima.currentinfo.weather.WeatherApi;
-import com.example.dima.currentinfo.weather.WeatherForecast;
+import com.example.dima.currentinfo.R;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,11 +45,6 @@ public class WeatherFragment extends Fragment {
     private TextView mWeatherWindSpeed;
     private TextView mWeatherWindDirection;
     private ProgressBar mProgressBar;
-    private Button mGetWeatherButton;
-
-    public static WeatherFragment newInstance() {
-        return new WeatherFragment();
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,7 +74,14 @@ public class WeatherFragment extends Fragment {
 
         mWeatherImage =  v.findViewById(R.id.weather_image);
 
-
+        Button getWeatherButton = v.findViewById(R.id.button_get_weather);
+        getWeatherButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = WebPageActivity.newIntent(getActivity());
+                startActivity(i);
+            }
+        });
         callWeather();
         return v;
     }
@@ -99,7 +99,7 @@ public class WeatherFragment extends Fragment {
         Double lng = 27.5619;
         String units = "metric";
         Call<Weather> callWeather = mApiService.getToday(lat, lng, units, WeatherApi.KEY);
-
+        callWeather.request();
         callWeather.enqueue(new Callback<Weather>() {
             @Override
             public void onResponse(Call<Weather> call, Response<Weather> response) {

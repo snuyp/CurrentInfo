@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.github.chrisbanes.photoview.PhotoView;
 
@@ -21,8 +22,6 @@ import java.io.File;
 public class PhotoViewFragment extends DialogFragment
 {
     private static final String ARG_INFO_ID = "info_id";
-    private Info mInfo;
-
 
     public static PhotoViewFragment newInstance(Info info) {
         Bundle args = new Bundle();
@@ -37,12 +36,11 @@ public class PhotoViewFragment extends DialogFragment
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View v = LayoutInflater.from(getActivity())
                 .inflate(R.layout.large_photo_view, null);
+
+        Info info = (Info) getArguments().getSerializable(ARG_INFO_ID);
+        File photoFile = InfoLab.get(getActivity()).getPhotoFile(info);
+
         PhotoView photoView = v.findViewById(R.id.large_photo_view);
-
-
-        mInfo = (Info) getArguments().getSerializable(ARG_INFO_ID);
-
-        File photoFile = InfoLab.get(getActivity()).getPhotoFile(mInfo);
         photoView.setImageBitmap(BitmapFactory.decodeFile(photoFile.getPath()));
 
         return new AlertDialog.Builder(getActivity())
@@ -55,6 +53,5 @@ public class PhotoViewFragment extends DialogFragment
                             }
                         })
                 .create();
-
     }
 }

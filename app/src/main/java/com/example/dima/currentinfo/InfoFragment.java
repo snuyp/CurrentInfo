@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import java.io.File;
+import java.io.FileReader;
 import java.util.Date;
 import java.util.UUID;
 
@@ -155,8 +156,8 @@ public class InfoFragment extends Fragment {
         return v;
     }
 
-    private void showPopupMenu(View v) {
-        PopupMenu popupMenu = new PopupMenu(getActivity(), v);
+    private void showPopupMenu(final View v) {
+        final PopupMenu popupMenu = new PopupMenu(getActivity(), v);
         popupMenu.inflate(R.menu.photo_popup_menu);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -167,6 +168,7 @@ public class InfoFragment extends Fragment {
                         PhotoViewFragment photoView = PhotoViewFragment.newInstance(mInfo);
                         photoView.setTargetFragment(InfoFragment.this, REQUEST_PHOTO);
                         photoView.show(fragment, ARG_INFO_ID);
+                        break;
                 }
                 return true;
             }
