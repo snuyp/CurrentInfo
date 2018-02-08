@@ -23,6 +23,7 @@
     <string-array name="titles">
         <item>Home</item>
         <item>Weather</item>
+        <item>Maps</item>
     </string-array>
 
     <string name="open_drawer">Open drawer</string>
@@ -38,5 +39,6 @@
     <string name="wind_direction">Wind direction, degrees </string>
     <string name="clouds">Cloudiness</string>
     <string name="weather_more_inform"> More information</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

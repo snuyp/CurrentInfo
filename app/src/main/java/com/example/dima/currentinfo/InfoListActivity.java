@@ -92,7 +92,10 @@ public class InfoListActivity extends SingleFragmentActivity {
             case 1:
                 fragment = new WeatherFragment();
                 break;
-            default:
+            case 2:
+                fragment = new MapsFragment();
+                break;
+                            default:
                 fragment = null;
         }
         FragmentManager ft = getSupportFragmentManager();

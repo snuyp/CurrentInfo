@@ -22,7 +22,6 @@ import java.util.UUID;
 public class InfoPagerActivity extends AppCompatActivity {
     private static final String EXTRA_INFO_ID = "info_id";
 
-    private ViewPager mViewPager;
     private List<Info> mInfoList;
 
     public static Intent newIntent(Context context, UUID infoId) {
@@ -44,11 +43,11 @@ public class InfoPagerActivity extends AppCompatActivity {
 
         UUID infoId = (UUID) getIntent().getSerializableExtra(EXTRA_INFO_ID);
 
-        mViewPager = (ViewPager) findViewById(R.id.activity_info_pager_view_pager);
+        ViewPager viewPager = findViewById(R.id.activity_info_pager_view_pager);
 
         mInfoList = InfoLab.get(this).getInfoList();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
+        viewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
 
             @Override
             public Fragment getItem(int position) {
@@ -65,7 +64,7 @@ public class InfoPagerActivity extends AppCompatActivity {
 
         for (int i = 0; i < mInfoList.size(); i++) {
             if (mInfoList.get(i).getId().equals(infoId)) {
-                mViewPager.setCurrentItem(i);
+                viewPager.setCurrentItem(i);
                 break;
             }
         }
