@@ -1,8 +1,10 @@
 package com.example.dima.currentinfo;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.net.Uri;
@@ -12,10 +14,15 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -27,6 +34,7 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.github.chrisbanes.photoview.PhotoView;
 
 import java.io.File;
 import java.io.FileReader;
@@ -60,11 +68,53 @@ public class InfoFragment extends Fragment {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_delete_info:
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(R.string.sure_delete)
+                        .setCancelable(true)
+                        .setPositiveButton(R.string.info_delete,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        InfoLab.get(getActivity()).deleteInfo(mInfo.getId());
+                                        dialog.cancel();
+                                        getActivity().finish();
+                                        Toast.makeText(getActivity(),R.string.info_delete, Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                        .setNegativeButton(R.string.return_dialog,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+
+                return true;
+//            case R.id.menu_item_show_subtitle:
+//                updateSubtitle();
+//                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_info,menu);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UUID uuid = (UUID) getArguments().getSerializable(ARG_INFO_ID);
         mInfo = InfoLab.get(getActivity()).getInfo(uuid);
         mPhotoFile = InfoLab.get(getActivity()).getPhotoFile(mInfo);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -110,14 +160,7 @@ public class InfoFragment extends Fragment {
                 mInfo.setSent(b);
             }
         });
-        Button deleteButton = v.findViewById(R.id.info_delete);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                InfoLab.get(getActivity()).deleteInfo(mInfo.getId());
-                getActivity().finish();
-            }
-        });
+
         Button reportButton = v.findViewById(R.id.info_report);
         reportButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +188,24 @@ public class InfoFragment extends Fragment {
                 startActivityForResult(captureImage, REQUEST_PHOTO);
             }
         });
+//        PhotoView photoView = v.findViewById(R.id.photo_ImageView);
+//        photoView.setOnDoubleTapListener(new GestureDetector.OnDoubleTapListener() {
+//            @Override
+//            public boolean onSingleTapConfirmed(MotionEvent e) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onDoubleTap(MotionEvent e) {
+//                //toIncreasePhoto();
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onDoubleTapEvent(MotionEvent e) {
+//                return false;
+//            }
+//        });
         mPhotoView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -152,6 +213,7 @@ public class InfoFragment extends Fragment {
                 return true;
             }
         });
+
         updatePhotoView();
         return v;
     }
@@ -164,10 +226,7 @@ public class InfoFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.to_increase_photo:
-                        FragmentManager fragment = getFragmentManager();
-                        PhotoViewFragment photoView = PhotoViewFragment.newInstance(mInfo);
-                        photoView.setTargetFragment(InfoFragment.this, REQUEST_PHOTO);
-                        photoView.show(fragment, ARG_INFO_ID);
+                        toIncreasePhoto();
                         break;
                 }
                 return true;
@@ -175,6 +234,13 @@ public class InfoFragment extends Fragment {
         });
         popupMenu.show();
 
+    }
+    public void toIncreasePhoto()
+    {
+        FragmentManager fragment = getFragmentManager();
+        PhotoViewFragment photoView = PhotoViewFragment.newInstance(mInfo);
+        photoView.setTargetFragment(InfoFragment.this, REQUEST_PHOTO);
+        photoView.show(fragment, ARG_INFO_ID);
     }
 
     @Override

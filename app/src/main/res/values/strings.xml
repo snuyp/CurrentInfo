@@ -40,5 +40,11 @@
     <string name="clouds">Cloudiness</string>
     <string name="weather_more_inform"> More information</string>
     <string name="title_activity_maps">Map</string>
+    <string name="cancel">Cancel</string>
 
+    <string name="GPSAlertDialogTitle">Gps alert</string>
+    <string name="GPSAlertDialogMessage">dialog message</string>
+    <string name="action_settings">Settings</string>
+    <string name="textwarn">Warn</string>
+    <string name="settings">Settings</string>
 </resources>
