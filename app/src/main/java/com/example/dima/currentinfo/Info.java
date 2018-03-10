@@ -13,6 +13,9 @@ import java.util.UUID;
 public class Info implements Serializable{
     private UUID mId;
     private String mTitle;
+    private Double mTemp;
+    private Double latitude;
+    private Double longitude;
     private Date mDate = new Date();
     private boolean mSent;
     private SimpleDateFormat mSimpleDate;
@@ -38,6 +41,30 @@ public class Info implements Serializable{
     public void setDate(Date date) {
         mDate = date;
         mSimpleDate.format(date);
+    }
+
+    public Double getTemp() {
+        return mTemp;
+    }
+
+    public void setTemp(Double temp) {
+        mTemp = temp;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     public boolean isSent() {

@@ -25,6 +25,9 @@ public class InfoBaseHelper extends SQLiteOpenHelper {
                 InfoTable.Cols.UUID + ", " +
                 InfoTable.Cols.TITLE + ", " +
                 InfoTable.Cols.DATE + ", " +
+                InfoTable.Cols.TEMP + ", " +
+                InfoTable.Cols.LATITUDE + ", " +
+                InfoTable.Cols.LONGITUDE + ", " +
                 InfoTable.Cols.SENT +
                         ")"
         );

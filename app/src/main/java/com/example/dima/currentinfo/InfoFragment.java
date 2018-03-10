@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -34,6 +35,7 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.dima.currentinfo.common.Common;
 import com.github.chrisbanes.photoview.PhotoView;
 
 import java.io.File;
@@ -58,10 +60,10 @@ public class InfoFragment extends Fragment {
     private File mPhotoFile;
 
 
+
     public static InfoFragment newInstance(UUID infoId) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_INFO_ID, infoId);
-
         InfoFragment infoFragment = new InfoFragment();
         infoFragment.setArguments(args);
         return infoFragment;
@@ -80,7 +82,7 @@ public class InfoFragment extends Fragment {
                                         InfoLab.get(getActivity()).deleteInfo(mInfo.getId());
                                         dialog.cancel();
                                         getActivity().finish();
-                                        Toast.makeText(getActivity(),R.string.info_delete, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(), R.string.info_delete, Toast.LENGTH_SHORT).show();
                                     }
                                 })
                         .setNegativeButton(R.string.return_dialog,
@@ -105,7 +107,7 @@ public class InfoFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_info,menu);
+        inflater.inflate(R.menu.fragment_info, menu);
     }
 
     @Override
@@ -117,11 +119,24 @@ public class InfoFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    private void setCoordinates() {
+        if (mInfo.getLatitude() == 0.0 && mInfo.getLongitude() == 0.0) {
+            mInfo.setLatitude(Common.lastLocation.getLatitude());
+            mInfo.setLongitude(Common.lastLocation.getLongitude());
+        }
+    }
+
+    private void updateCoordinates() {
+        mInfo.setLatitude(Common.lastLocation.getLatitude());
+        mInfo.setLongitude(Common.lastLocation.getLongitude());
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_info, container, false);
 
         EditText titleField = v.findViewById(R.id.info_title);
+
         titleField.setText(mInfo.getTitle());
         titleField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -215,6 +230,8 @@ public class InfoFragment extends Fragment {
         });
 
         updatePhotoView();
+
+        setCoordinates();
         return v;
     }
 
@@ -235,8 +252,8 @@ public class InfoFragment extends Fragment {
         popupMenu.show();
 
     }
-    public void toIncreasePhoto()
-    {
+
+    public void toIncreasePhoto() {
         FragmentManager fragment = getFragmentManager();
         PhotoViewFragment photoView = PhotoViewFragment.newInstance(mInfo);
         photoView.setTargetFragment(InfoFragment.this, REQUEST_PHOTO);
@@ -268,7 +285,7 @@ public class InfoFragment extends Fragment {
         if (mPhotoFile == null || !mPhotoFile.exists()) {
             mPhotoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         } else {
-          Glide.with(this)
+            Glide.with(this)
                     .load(mPhotoFile)
                     .into(mPhotoView);
 
@@ -284,4 +301,6 @@ public class InfoFragment extends Fragment {
         mSentCheckBox.setChecked(true);
         return stringReport;
     }
+
+
 }

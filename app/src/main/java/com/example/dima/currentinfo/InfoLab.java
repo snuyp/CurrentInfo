@@ -40,6 +40,9 @@ public class InfoLab {
         values.put(InfoTable.Cols.UUID, info.getId().toString());
         values.put(InfoTable.Cols.TITLE, info.getTitle());
         values.put(InfoTable.Cols.DATE, info.getDate().getTime());
+        values.put(InfoTable.Cols.TEMP, info.getTemp());
+        values.put(InfoTable.Cols.LATITUDE, info.getLatitude());
+        values.put(InfoTable.Cols.LONGITUDE, info.getLongitude());
         values.put(InfoTable.Cols.SENT, info.isSent() ? 1 : 0);
         return values;
     }

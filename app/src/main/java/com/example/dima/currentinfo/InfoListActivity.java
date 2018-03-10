@@ -4,14 +4,15 @@ import android.Manifest;
 import android.app.FragmentTransaction;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.os.Build;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
-
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,16 +20,30 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.dima.currentinfo.common.Common;
 import com.example.dima.currentinfo.weather.WeatherFragment;
-
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 /**
  * Created by Dima on 13.11.2017.
  */
 
 public class InfoListActivity extends SingleFragmentActivity {
+
+    private static final int UPDATE_INTERVAL = 5000;
+    private static final int FATEST_INTERVAL = 3000;
+    private static final int DISPLACEMENT = 10;
+    private static final int PERMISSIONS_REQUEST_CODE = 666;
+
+    private LocationRequest mLocationRequest;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+    private LocationCallback mLocationCallback;
+
     private static final String TAG = "INFO_LIST";
     private String[] mTitles;
     private ListView mDrawerList;
@@ -40,41 +55,13 @@ public class InfoListActivity extends SingleFragmentActivity {
         return new InfoListFragment();
     }
 
-    private void getLocationPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    Tracker.REQUEST_PERMISSIONS_REQUEST_CODE);
-        }
-    }
-
-    private boolean checkPermission() {
-        return isGranted(ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION)) &&
-                isGranted(ActivityCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION));
-    }
-
-    private boolean isGranted(int permission) {
-        return permission == PackageManager.PERMISSION_GRANTED;
-    }
-
-    public void getLocation() {
-        if (!checkPermission()) {
-            getLocationPermissions();
-        } else {
-            //TODO
-            // without it not working (in first time, in mapsFragment)
-            //GpsTracker working only second time
-            Tracker.get(this);
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getLocation();
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         mTitles = getResources().getStringArray(R.array.titles);
         mDrawerList = findViewById(R.id.left_drawer);
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-
         if (savedInstanceState != null) {
             mPosition = savedInstanceState.getInt("position");
             setActionBarTitle(mPosition);
@@ -82,7 +69,7 @@ public class InfoListActivity extends SingleFragmentActivity {
             selectItem(0);
         }
 
-        mDrawerList.setAdapter(new ArrayAdapter<String>(
+        mDrawerList.setAdapter(new ArrayAdapter<>(
                 this, android.R.layout.simple_list_item_activated_1, mTitles));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
@@ -103,6 +90,83 @@ public class InfoListActivity extends SingleFragmentActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        setUpLocation();
+    }
+
+    private void setUpLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_CODE);
+        } else {
+            buildLocationCallback();
+            createLocationRequest();
+            displayLocation();
+        }
+    }
+
+    private void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+        mLocationRequest.setFastestInterval(FATEST_INTERVAL);
+        mLocationRequest.setSmallestDisplacement(DISPLACEMENT);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
+    }
+
+    private void buildLocationCallback() {
+        mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                Common.lastLocation = locationResult.getLocations().get(locationResult.getLocations().size() - 1); //get last location
+                displayLocation();
+            }
+        };
+    }
+
+    private void displayLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mFusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                Common.lastLocation = location;
+            }
+        });
+        mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_CODE);
+        } else {
+            buildLocationCallback();
+            createLocationRequest();
+            displayLocation();
+        }
+
     }
 
     @Override
@@ -130,8 +194,6 @@ public class InfoListActivity extends SingleFragmentActivity {
                 fragment = new WeatherFragment();
                 break;
             case 2:
-
-
                 fragment = new MapsFragment();
                 break;
             default:

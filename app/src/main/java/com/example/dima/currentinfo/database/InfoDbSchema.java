@@ -13,6 +13,9 @@ public class InfoDbSchema {
             public static final String UUID = "uuid";
             public static final String TITLE = "title";
             public static final String DATE = "date";
+            public static final String TEMP = "temp";
+            public static final String LATITUDE = "latitude";
+            public static final String LONGITUDE = "longitude";
             public static final String SENT = "sent";
         }
     }

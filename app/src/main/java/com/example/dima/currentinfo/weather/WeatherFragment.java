@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.dima.currentinfo.R;
+import com.example.dima.currentinfo.common.Common;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -93,10 +94,13 @@ public class WeatherFragment extends Fragment {
 
     private void callWeather() {
         /*
-          TODO     Geo coords  for Minsk [53.9023, 27.5619].
+           Geo coords  for Minsk [53.9023, 27.5619].
          */
-        Double lat = 53.9023;
-        Double lng = 27.5619;
+
+//        Double lat = 53.9023;
+//        Double lng = 27.5619;
+        Double lat = Common.lastLocation.getLatitude();
+        Double lng = Common.lastLocation.getLongitude();
         String units = "metric";
         Call<Weather> callWeather = mApiService.getToday(lat, lng, units, WeatherApi.KEY);
         callWeather.request();
@@ -110,7 +114,8 @@ public class WeatherFragment extends Fragment {
                     mWeatherTemp.setText(weather.getMain().getTemp());
                     mWeatherTempMax.setText(weather.getMain().getTempMax());
                     mWeatherTempMin.setText(weather.getMain().getTempMin());
-                    mWeatherCity.setText(weather.getCity().split(" ")[1]);
+                  //  mWeatherCity.setText(weather.getCity().split(" ")[1]);
+                    mWeatherCity.setText(weather.getCity());
                     Glide.with(getContext()).load(weather.getIcon()).into(mWeatherImage);
                     updateSubtitle(weather.getDate() + " [" + weather.getSys().getCountry() + "] ");
 
